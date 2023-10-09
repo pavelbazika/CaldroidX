@@ -1,13 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "28.0.3"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.caldroidsample"
-        minSdkVersion 14
-        targetSdkVersion 29
+        minSdkVersion 23
+        targetSdkVersion 33
     }
 
     buildTypes {
@@ -16,10 +15,13 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
         }
     }
+
+    namespace "com.caldroidsample"
 }
 
 dependencies {
     implementation project(':caldroid')
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.darwinsys:hirondelle-date4j:1.5.1'
 }
