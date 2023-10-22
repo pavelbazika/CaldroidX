@@ -1,15 +1,19 @@
 package com.roomorama.caldroid;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 
 import com.caldroid.R;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 /**
  * DateGridFragment contains only 1 gridview with 7 columns to display all the
@@ -79,8 +83,8 @@ public class DateGridFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
 
         // If gridViewRes is not valid, use default fragment layout
         if (gridViewRes == 0) {
@@ -108,4 +112,23 @@ public class DateGridFragment extends Fragment {
         return gridView;
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ViewTreeObserver vto = view.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(() -> {
+            Fragment parentFragment = getParentFragment();
+            if (parentFragment instanceof CaldroidFragment) {
+                CaldroidFragment caldroidFragment = (CaldroidFragment)parentFragment;
+
+                String childTag = CaldroidFragment.getViewPager2FragmentTag(caldroidFragment.getCurrentMonthPoistion());
+                Fragment child = parentFragment.getChildFragmentManager().findFragmentByTag(childTag);
+                if (child instanceof DateGridFragment) {
+                    DateGridFragment dateGridFragment = (DateGridFragment) child;
+                    caldroidFragment.resizeViewPager(view, dateGridFragment.getGridAdapter().getDatetimeList());
+                }
+            }
+        });
+
+        super.onViewCreated(view, savedInstanceState);
+    }
 }

@@ -9,7 +9,7 @@ import java.util.Locale;
 
 import hirondelle.date4j.DateTime;
 
-/**
+/*
  * Convenient helper to work with date, Date4J DateTime and String
  *
  * @author thomasdao
@@ -22,7 +22,7 @@ public class CalendarHelper {
         yyyyMMddFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
     }
 
-    /**
+    /*
      * Retrieve all the dates for a given calendar month Include previous month,
      * current month and next month.
      *
@@ -33,7 +33,7 @@ public class CalendarHelper {
      */
     public static ArrayList<DateTime> getFullWeeks(int month, int year,
                                                    int startDayOfWeek, boolean sixWeeksInCalendar) {
-        ArrayList<DateTime> datetimeList = new ArrayList<DateTime>();
+        ArrayList<DateTime> datetimeList = new ArrayList<>();
 
         DateTime firstDateOfMonth = new DateTime(year, month, 1, 0, 0, 0, 0);
         DateTime lastDateOfMonth = firstDateOfMonth.plusDays(firstDateOfMonth
@@ -99,7 +99,7 @@ public class CalendarHelper {
         return datetimeList;
     }
 
-    /**
+    /*
      * Get the DateTime from Date, with hour and min is 0
      *
      * @param date
@@ -133,7 +133,7 @@ public class CalendarHelper {
         return calendar.getTime();
     }
 
-    /**
+    /*
      * Get the Date from String with custom format. Default format is yyyy-MM-dd
      *
      * @param dateString
@@ -157,7 +157,7 @@ public class CalendarHelper {
         return formatter.parse(dateString);
     }
 
-    /**
+    /*
      * Get the DateTime from String with custom format. Default format is
      * yyyy-MM-dd
      *
@@ -180,7 +180,7 @@ public class CalendarHelper {
 
     public static ArrayList<String> convertToStringList(
             ArrayList<DateTime> dateTimes) {
-        ArrayList<String> list = new ArrayList<String>();
+        ArrayList<String> list = new ArrayList<>();
         for (DateTime dateTime : dateTimes) {
             list.add(dateTime.format("YYYY-MM-DD"));
         }

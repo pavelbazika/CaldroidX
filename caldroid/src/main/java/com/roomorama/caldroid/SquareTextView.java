@@ -19,6 +19,7 @@ public class SquareTextView extends CellView {
 
     @Override
     public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        //noinspection SuspiciousNameCombination
         super.onMeasure(widthMeasureSpec, widthMeasureSpec);
     }
 

@@ -1,10 +1,10 @@
 package com.roomorama.caldroid;
 
-import java.util.ArrayList;
-
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 /**
  * MonthPagerAdapter holds 4 fragments, which provides fragment for current
@@ -13,40 +13,24 @@ import androidx.fragment.app.FragmentPagerAdapter;
  *
  * @author thomasdao
  */
-public class MonthPagerAdapter extends FragmentPagerAdapter {
-
-    private ArrayList<DateGridFragment> fragments;
-
-    // Lazily create the fragments
-    public ArrayList<DateGridFragment> getFragments() {
-        if (fragments == null) {
-            fragments = new ArrayList<DateGridFragment>();
-            for (int i = 0; i < getCount(); i++) {
-                fragments.add(new DateGridFragment());
-            }
-        }
-        return fragments;
+public class MonthPagerAdapter extends FragmentStateAdapter {
+    public MonthPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull CaldroidFragment _parent) {
+        super(fragmentManager, lifecycle);
+        parent = _parent;
     }
 
-    public void setFragments(ArrayList<DateGridFragment> fragments) {
-        this.fragments = fragments;
-    }
-
-    public MonthPagerAdapter(FragmentManager fm) {
-        super(fm);
+    @NonNull
+    @Override
+    public Fragment createFragment(int position) {
+        return parent.createDataGridFragment(position);
     }
 
     @Override
-    public Fragment getItem(int position) {
-        DateGridFragment fragment = getFragments().get(position);
-        return fragment;
-    }
-
-    @Override
-    public int getCount() {
+    public int getItemCount() {
         // We need 4 gridviews for previous month, current month and next month,
         // and 1 extra fragment for fragment recycle
-        return CaldroidFragment.NUMBER_OF_PAGES;
+        return ViewPagerHelper.OFFSET + 1;
     }
 
+    private final CaldroidFragment parent;
 }

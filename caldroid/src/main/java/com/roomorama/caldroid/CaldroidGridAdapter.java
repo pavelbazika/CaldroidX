@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -20,10 +19,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import hirondelle.date4j.DateTime;
 
-/**
+/*
  * The CaldroidGridAdapter provides customized view for the dates gridview
  *
  * @author thomasdao
@@ -32,14 +32,14 @@ public class CaldroidGridAdapter extends BaseAdapter {
     protected ArrayList<DateTime> datetimeList;
     protected int month;
     protected int year;
-    protected Context context;
+    protected final Context context;
     protected ArrayList<DateTime> disableDates;
     protected ArrayList<DateTime> selectedDates;
 
     // Use internally, to make the search for date faster instead of using
     // indexOf methods on ArrayList
-    protected Map<DateTime, Integer> disableDatesMap = new HashMap<>();
-    protected Map<DateTime, Integer> selectedDatesMap = new HashMap<>();
+    protected final Map<DateTime, Integer> disableDatesMap = new HashMap<>();
+    protected final Map<DateTime, Integer> selectedDatesMap = new HashMap<>();
 
     protected DateTime minDateTime;
     protected DateTime maxDateTime;
@@ -48,21 +48,21 @@ public class CaldroidGridAdapter extends BaseAdapter {
     protected boolean sixWeeksInCalendar;
     protected boolean squareTextViewCell;
     protected int themeResource;
-    protected Resources resources;
+    protected final Resources resources;
 
     protected int defaultCellBackgroundRes = -1;
     protected ColorStateList defaultTextColorRes;
 
-    /**
+    /*
      * caldroidData belongs to Caldroid
      */
     protected Map<String, Object> caldroidData;
-    /**
+    /*
      * extraData belongs to client
      */
     protected Map<String, Object> extraData;
 
-	protected LayoutInflater localInflater;
+	protected final LayoutInflater localInflater;
 
     public void setAdapterDateTime(DateTime dateTime) {
         this.month = dateTime.getMonth();
@@ -131,7 +131,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         this.extraData = extraData;
     }
 
-    /**
+    /*
      * Constructor
      *
      * @param context
@@ -159,7 +159,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 	    localInflater = CaldroidFragment.getThemeInflater(context, inflater, themeResource);
     }
 
-    /**
+    /*
      * Retrieve internal parameters from caldroid data
      */
     @SuppressWarnings("unchecked")
@@ -186,16 +186,16 @@ public class CaldroidGridAdapter extends BaseAdapter {
                 .get(CaldroidFragment._MIN_DATE_TIME);
         maxDateTime = (DateTime) caldroidData
                 .get(CaldroidFragment._MAX_DATE_TIME);
-        startDayOfWeek = (Integer) caldroidData
-                .get(CaldroidFragment.START_DAY_OF_WEEK);
-        sixWeeksInCalendar = (Boolean) caldroidData
-                .get(CaldroidFragment.SIX_WEEKS_IN_CALENDAR);
-        squareTextViewCell = (Boolean) caldroidData
-                .get(CaldroidFragment.SQUARE_TEXT_VIEW_CELL);
+        startDayOfWeek = Optional.ofNullable((Integer) caldroidData
+                .get(CaldroidFragment.START_DAY_OF_WEEK)).orElse(0);
+        sixWeeksInCalendar = Optional.ofNullable((Boolean) caldroidData
+                .get(CaldroidFragment.SIX_WEEKS_IN_CALENDAR)).orElse(false);
+        squareTextViewCell = Optional.ofNullable ((Boolean) caldroidData
+                .get(CaldroidFragment.SQUARE_TEXT_VIEW_CELL)).orElse(false);
 
         // Get theme
-        themeResource = (Integer) caldroidData
-                .get(CaldroidFragment.THEME_RESOURCE);
+        themeResource = Optional.ofNullable((Integer) caldroidData
+                .get(CaldroidFragment.THEME_RESOURCE)).orElse(0);
 
         this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year,
                 startDayOfWeek, sixWeeksInCalendar);
@@ -219,9 +219,13 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
         // Get default background of cell
         TypedArray typedArray = wrapped.obtainStyledAttributes(styleCellVal.data, R.styleable.Cell);
-        defaultCellBackgroundRes = typedArray.getResourceId(R.styleable.Cell_android_background, -1);
-        defaultTextColorRes = typedArray.getColorStateList(R.styleable.Cell_android_textColor);
-        typedArray.recycle();
+        try {
+            defaultCellBackgroundRes = typedArray.getResourceId(R.styleable.Cell_android_background, -1);
+            defaultTextColorRes = typedArray.getColorStateList(R.styleable.Cell_android_textColor);
+        }
+        finally {
+            typedArray.recycle();
+        }
     }
 
     public void updateToday() {
@@ -247,11 +251,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
             // Set it
             if (drawable != null) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                    backgroundView.setBackground(drawable);
-                } else {
-                    backgroundView.setBackgroundDrawable(drawable);
-                }
+                backgroundView.setBackground(drawable);
             }
         }
 
@@ -264,7 +264,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
             // Set it
             if (textColorResource != null) {
-                textView.setTextColor(resources.getColor(textColorResource));
+                textView.setTextColor(resources.getColor(textColorResource, null));
             }
         }
     }
@@ -274,7 +274,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         cellView.setTextColor(defaultTextColorRes);
     }
 
-    /**
+    /*
      * Customize colors of text and background based on states of the cell
      * (disabled, active, selected, etc)
      * <p/>

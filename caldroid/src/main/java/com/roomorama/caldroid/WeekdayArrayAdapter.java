@@ -1,16 +1,14 @@
 package com.roomorama.caldroid;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.view.ContextThemeWrapper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.caldroid.R;
+import com.caldroid.databinding.WeekdayTextviewBinding;
 
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
  * Customize the weekday gridview
  */
 public class WeekdayArrayAdapter extends ArrayAdapter<String> {
-    LayoutInflater localInflater;
+    private final LayoutInflater localInflater;
 
     public WeekdayArrayAdapter(Context context, int textViewResourceId,
                                List<String> objects, int themeResource) {
@@ -40,13 +38,23 @@ public class WeekdayArrayAdapter extends ArrayAdapter<String> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         // To customize text size and color
-        TextView textView = (TextView) localInflater.inflate(R.layout.weekday_textview, null);
+        WeekdayTextviewBinding binding;
+        if (convertView == null) {
+            binding = WeekdayTextviewBinding.inflate(localInflater, parent, false);
+            convertView = binding.getRoot();
+            convertView.setTag(binding);
+        }
+        else {
+            binding = (WeekdayTextviewBinding) convertView.getTag();
+        }
+
+        TextView textView = binding.getRoot();
 
         // Set content
         String item = getItem(position);
         textView.setText(item);
 
-        return textView;
+        return convertView;
     }
 
     private LayoutInflater getLayoutInflater(Context context, int themeResource) {
