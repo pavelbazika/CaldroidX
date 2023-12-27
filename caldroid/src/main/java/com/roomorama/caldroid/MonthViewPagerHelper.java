@@ -9,10 +9,10 @@ import androidx.annotation.NonNull;
 import androidx.viewpager2.widget.ViewPager2;
 import hirondelle.date4j.DateTime;
 
-public class ViewPagerHelper {
+public class MonthViewPagerHelper {
     public static final int OFFSET = 1000;
 
-    public ViewPagerHelper() {}
+    public MonthViewPagerHelper() {}
 
     public void setSixWeeksInCalendar(boolean sixWeeksInCalendar) {
         this.sixWeeksInCalendar = sixWeeksInCalendar;
@@ -63,5 +63,4 @@ public class ViewPagerHelper {
      * Use internally to decide height of the calendar
      */
     private int rowHeight = 0;
-
 }
