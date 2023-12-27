@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="?styleCaldroidViewLayout"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/calendar_title_textview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="3dp"
+        android:textSize="21sp"/>
+
+    <LinearLayout
+        android:id="@+id/calendar_year_grid_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <GridView
+            android:id="@+id/calendar_year_gridview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:numColumns="4"
+            android:stretchMode="columnWidth"
+            style="?styleCaldroidGridView" />
+
+    </LinearLayout>
+
+</LinearLayout>
