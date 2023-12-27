@@ -24,11 +24,11 @@ import java.util.Optional;
 import hirondelle.date4j.DateTime;
 
 /*
- * The CaldroidGridAdapter provides customized view for the dates gridview
+ * The DateGridAdapter provides customized view for the dates gridview
  *
  * @author thomasdao
  */
-public class CaldroidGridAdapter extends BaseAdapter {
+public class DateGridAdapter extends BaseAdapter {
     protected ArrayList<DateTime> datetimeList;
     protected int month;
     protected int year;
@@ -140,9 +140,9 @@ public class CaldroidGridAdapter extends BaseAdapter {
      * @param caldroidData
      * @param extraData
      */
-    public CaldroidGridAdapter(Context context, int month, int year,
-                               Map<String, Object> caldroidData,
-                               Map<String, Object> extraData) {
+    public DateGridAdapter(Context context, int month, int year,
+                           Map<String, Object> caldroidData,
+                           Map<String, Object> extraData) {
         super();
         this.month = month;
         this.year = year;
@@ -156,7 +156,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
 	    LayoutInflater inflater = (LayoutInflater) context
 			    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-	    localInflater = CaldroidFragment.getThemeInflater(context, inflater, themeResource);
+	    localInflater = DateCaldroidFragment.getThemeInflater(context, inflater, themeResource);
     }
 
     /*
@@ -165,7 +165,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
     @SuppressWarnings("unchecked")
     private void populateFromCaldroidData() {
         disableDates = (ArrayList<DateTime>) caldroidData
-                .get(CaldroidFragment.DISABLE_DATES);
+                .get(DateCaldroidFragment.DISABLE_DATES);
         if (disableDates != null) {
             disableDatesMap.clear();
             for (DateTime dateTime : disableDates) {
@@ -174,7 +174,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
         }
 
         selectedDates = (ArrayList<DateTime>) caldroidData
-                .get(CaldroidFragment.SELECTED_DATES);
+                .get(DateCaldroidFragment.SELECTED_DATES);
         if (selectedDates != null) {
             selectedDatesMap.clear();
             for (DateTime dateTime : selectedDates) {
@@ -183,19 +183,19 @@ public class CaldroidGridAdapter extends BaseAdapter {
         }
 
         minDateTime = (DateTime) caldroidData
-                .get(CaldroidFragment._MIN_DATE_TIME);
+                .get(DateCaldroidFragment.MIN_DATE_TIME);
         maxDateTime = (DateTime) caldroidData
-                .get(CaldroidFragment._MAX_DATE_TIME);
+                .get(DateCaldroidFragment.MAX_DATE_TIME);
         startDayOfWeek = Optional.ofNullable((Integer) caldroidData
-                .get(CaldroidFragment.START_DAY_OF_WEEK)).orElse(0);
+                .get(DateCaldroidFragment.START_DAY_OF_WEEK)).orElse(0);
         sixWeeksInCalendar = Optional.ofNullable((Boolean) caldroidData
-                .get(CaldroidFragment.SIX_WEEKS_IN_CALENDAR)).orElse(false);
+                .get(DateCaldroidFragment.SIX_WEEKS_IN_CALENDAR)).orElse(false);
         squareTextViewCell = Optional.ofNullable ((Boolean) caldroidData
-                .get(CaldroidFragment.SQUARE_TEXT_VIEW_CELL)).orElse(false);
+                .get(DateCaldroidFragment.SQUARE_TEXT_VIEW_CELL)).orElse(false);
 
         // Get theme
         themeResource = Optional.ofNullable((Integer) caldroidData
-                .get(CaldroidFragment.THEME_RESOURCE)).orElse(0);
+                .get(DateCaldroidFragment.THEME_RESOURCE)).orElse(0);
 
         this.datetimeList = CalendarHelper.getFullWeeks(this.month, this.year,
                 startDayOfWeek, sixWeeksInCalendar);
@@ -244,7 +244,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
                                       TextView textView) {
         // Set custom background resource
         Map<DateTime, Drawable> backgroundForDateTimeMap = (Map<DateTime, Drawable>) caldroidData
-                .get(CaldroidFragment._BACKGROUND_FOR_DATETIME_MAP);
+                .get(DateCaldroidFragment.BACKGROUND_FOR_DATETIME_MAP);
         if (backgroundForDateTimeMap != null) {
             // Get background resource for the dateTime
             Drawable drawable = backgroundForDateTimeMap.get(dateTime);
@@ -257,7 +257,7 @@ public class CaldroidGridAdapter extends BaseAdapter {
 
         // Set custom text color
         Map<DateTime, Integer> textColorForDateTimeMap = (Map<DateTime, Integer>) caldroidData
-                .get(CaldroidFragment._TEXT_COLOR_FOR_DATETIME_MAP);
+                .get(DateCaldroidFragment.TEXT_COLOR_FOR_DATETIME_MAP);
         if (textColorForDateTimeMap != null) {
             // Get textColor for the dateTime
             Integer textColorResource = textColorForDateTimeMap.get(dateTime);

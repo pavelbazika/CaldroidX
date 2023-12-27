@@ -6,11 +6,12 @@ import java.util.Map;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import hirondelle.date4j.DateTime;
 
 /*
- * CaldroidListener inform when user clicks on a valid date (not within disabled
+ * DateCaldroidListener inform when user clicks on a valid date (not within disabled
  * dates, and valid between min/max dates)
  * <p/>
  * The method onChangeMonth is optional, user can always override this to listen
@@ -18,7 +19,7 @@ import hirondelle.date4j.DateTime;
  *
  * @author thomasdao
  */
-public abstract class CaldroidListener {
+public abstract class DateCaldroidListener {
     /*
      * Inform client user has clicked on a date
      *
@@ -51,18 +52,20 @@ public abstract class CaldroidListener {
 
 
     /*
-     * Inform client that CaldroidFragment view has been created and views are
+     * Inform client that DateCaldroidFragment view has been created and views are
      * no longer null. Useful for customization of button and text views
      */
     public void onCaldroidViewCreated() {
         // Do nothing
     }
 
-    /*
-     * Inform client, that adapter of given month will be loaded, prepare data
-     */
     @Nullable
     public Map<DateTime, Drawable> getBackgroundDateTimeMap(int month, int year) {
         return null;
+    }
+
+    // Called when title was clicked
+    public void onTitleClicked(int _month, int _year) {
+
     }
 }

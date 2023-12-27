@@ -19,6 +19,7 @@ dependencies {
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     api 'com.darwinsys:hirondelle-date4j:1.5.1'
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
 }
 
 //apply from: 'https://raw.githubusercontent.com/shamanland/gradle-mvn-push/cc18d56549cdea03f744b6fff27911569394073e/gradle-mvn-push.gradle'

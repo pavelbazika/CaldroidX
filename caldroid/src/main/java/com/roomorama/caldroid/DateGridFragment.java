@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment;
  */
 public class DateGridFragment extends Fragment {
     private GridView gridView;
-    private CaldroidGridAdapter gridAdapter;
+    private DateGridAdapter gridAdapter;
     private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
     private int gridViewRes = 0;
@@ -48,11 +48,11 @@ public class DateGridFragment extends Fragment {
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
-    public CaldroidGridAdapter getGridAdapter() {
+    public DateGridAdapter getGridAdapter() {
         return gridAdapter;
     }
 
-    public void setGridAdapter(CaldroidGridAdapter gridAdapter) {
+    public void setGridAdapter(DateGridAdapter gridAdapter) {
         this.gridAdapter = gridAdapter;
     }
 
@@ -65,8 +65,6 @@ public class DateGridFragment extends Fragment {
     }
 
     private void setupGridView() {
-
-
         // Client normally needs to provide the adapter and onItemClickListener
         // before the fragment is attached to avoid complex crash due to
         // fragment life cycles
@@ -98,7 +96,7 @@ public class DateGridFragment extends Fragment {
         }
 
         if (gridView == null) {
-            LayoutInflater localInflater = CaldroidFragment.getThemeInflater(getActivity(),
+            LayoutInflater localInflater = DateCaldroidFragment.getThemeInflater(getActivity(),
                     inflater, themeResource);
             gridView = (GridView) localInflater.inflate(gridViewRes, container, false);
             setupGridView();
@@ -117,14 +115,14 @@ public class DateGridFragment extends Fragment {
         ViewTreeObserver vto = view.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(() -> {
             Fragment parentFragment = getParentFragment();
-            if (parentFragment instanceof CaldroidFragment) {
-                CaldroidFragment caldroidFragment = (CaldroidFragment)parentFragment;
+            if (parentFragment instanceof DateCaldroidFragment) {
+                DateCaldroidFragment dateCaldroidFragment = (DateCaldroidFragment)parentFragment;
 
-                String childTag = CaldroidFragment.getViewPager2FragmentTag(caldroidFragment.getCurrentMonthPoistion());
+                String childTag = DateCaldroidFragment.getViewPager2FragmentTag(dateCaldroidFragment.getCurrentPagerPoistion());
                 Fragment child = parentFragment.getChildFragmentManager().findFragmentByTag(childTag);
                 if (child instanceof DateGridFragment) {
                     DateGridFragment dateGridFragment = (DateGridFragment) child;
-                    caldroidFragment.resizeViewPager(view, dateGridFragment.getGridAdapter().getDatetimeList());
+                    dateCaldroidFragment.resizeViewPager(view, dateGridFragment.getGridAdapter().getDatetimeList());
                 }
             }
         });
