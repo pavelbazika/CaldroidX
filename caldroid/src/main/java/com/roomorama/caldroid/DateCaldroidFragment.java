@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -115,12 +114,6 @@ public class DateCaldroidFragment extends DialogFragment {
             monthYearStringBuilder, Locale.getDefault());
 
     private final MonthViewPagerHelper viewPagerHelper = new MonthViewPagerHelper();
-
-    /*
-     * To customize the disabled background drawable and text color
-     */
-    public static int disabledBackgroundDrawable = -1;
-    public static int disabledTextColor = Color.GRAY;
 
     /*
      * Caldroid view components
@@ -1423,10 +1416,6 @@ public class DateCaldroidFragment extends DialogFragment {
 
         public void setCurrentPage(int currentPage) {
             this.currentPage = currentPage;
-        }
-
-        @Override
-        public void onPageScrollStateChanged(int position) {
         }
 
         @Override

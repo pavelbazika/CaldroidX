@@ -1,12 +1,11 @@
 package com.roomorama.caldroid;
 
-import java.util.Date;
-import java.util.Map;
-
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
-import androidx.annotation.NonNull;
+import java.util.Date;
+import java.util.Map;
+
 import androidx.annotation.Nullable;
 import hirondelle.date4j.DateTime;
 
@@ -35,7 +34,7 @@ public abstract class DateCaldroidListener {
      * @param date
      * @param view
      */
-    public void onLongClickDate(Date date, View view) {
+    public void onLongClickDate(Date ignoredDate, View ignoredView) {
         // Do nothing
     }
 
@@ -46,7 +45,7 @@ public abstract class DateCaldroidListener {
      * @param month
      * @param year
      */
-    public void onChangeMonth(int month, int year) {
+    public void onChangeMonth(int ignoredMonth, int ignoredYear) {
         // Do nothing
     }
 

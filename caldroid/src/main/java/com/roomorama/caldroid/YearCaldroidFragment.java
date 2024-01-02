@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.TextView;
 
 import com.caldroid.R;
@@ -28,7 +27,6 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import hirondelle.date4j.DateTime;
 
@@ -842,15 +840,15 @@ public class YearCaldroidFragment extends DialogFragment {
 
         if (yearCaldroidListener != null) {
             Map<DateTime, Drawable> bckMap = yearCaldroidListener.getBackgroundYearMap();
-            yearCount = bckMap.size();
-            if (yearCaldroidListener != null) {
-                if (bckMap != null) {
+            if (bckMap != null) {
+                yearCount = bckMap.size();
+                if (yearCaldroidListener != null) {
                     backgroundForDateTimeMap = bckMap;
-                }
 
-                Map<Integer, String> ct = yearCaldroidListener.getCellTexts();
-                if (ct != null) {
-                    cellTexts = ct;
+                    Map<Integer, String> ct = yearCaldroidListener.getCellTexts();
+                    if (ct != null) {
+                        cellTexts = ct;
+                    }
                 }
             }
         }
@@ -866,9 +864,8 @@ public class YearCaldroidFragment extends DialogFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ViewTreeObserver vto = view.getViewTreeObserver();
-        vto.addOnGlobalLayoutListener(() -> {
-            viewPagerHelper.resizeCalendarViewPager(binding.calendarYearGridContainer, binding.calendarYearGridview, ((yearCount - 1) / 4) + 1);
-        });
+        vto.addOnGlobalLayoutListener(() ->
+                viewPagerHelper.resizeCalendarViewPager(binding.calendarYearGridContainer, binding.calendarYearGridview, ((yearCount - 1) / 4) + 1));
 
         super.onViewCreated(view, savedInstanceState);
 

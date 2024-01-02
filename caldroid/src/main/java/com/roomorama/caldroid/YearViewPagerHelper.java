@@ -3,11 +3,7 @@ package com.roomorama.caldroid;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.ArrayList;
-
 import androidx.annotation.NonNull;
-import androidx.viewpager2.widget.ViewPager2;
-import hirondelle.date4j.DateTime;
 
 public class YearViewPagerHelper {
 

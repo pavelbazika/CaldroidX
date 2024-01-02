@@ -29,7 +29,7 @@ public abstract class MonthCaldroidListener {
      * @param date
      * @param view
      */
-    public void onLongClickDate(Date date, View view) {
+    public void onLongClickDate(Date ignoredDate, View ignoredView) {
         // Do nothing
     }
 
@@ -40,7 +40,7 @@ public abstract class MonthCaldroidListener {
      * @param month
      * @param year
      */
-    public void onChangeYear(int year) {
+    public void onChangeYear(int ignoredYear) {
         // Do nothing
     }
 
