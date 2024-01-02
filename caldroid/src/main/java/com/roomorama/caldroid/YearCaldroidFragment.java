@@ -840,18 +840,21 @@ public class YearCaldroidFragment extends DialogFragment {
         titleTextView = binding.calendarTitleTextview;
         titleTextView.setText(titleString);
 
-        Map<DateTime, Drawable> bckMap = yearCaldroidListener.getBackgroundYearMap();
-        yearCount = bckMap.size();
         if (yearCaldroidListener != null) {
-            if (bckMap != null) {
-                backgroundForDateTimeMap = bckMap;
-            }
+            Map<DateTime, Drawable> bckMap = yearCaldroidListener.getBackgroundYearMap();
+            yearCount = bckMap.size();
+            if (yearCaldroidListener != null) {
+                if (bckMap != null) {
+                    backgroundForDateTimeMap = bckMap;
+                }
 
-            Map<Integer, String> ct = yearCaldroidListener.getCellTexts();
-            if (ct != null) {
-                cellTexts = ct;
+                Map<Integer, String> ct = yearCaldroidListener.getCellTexts();
+                if (ct != null) {
+                    cellTexts = ct;
+                }
             }
         }
+
         yearGridAdapter = new YearGridAdapter(requireContext(), getCaldroidData(), getExtraData());
         binding.calendarYearGridview.setAdapter(yearGridAdapter);
         binding.calendarYearGridview.setOnItemClickListener(getYearItemClickListener());
