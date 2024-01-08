@@ -66,7 +66,8 @@ public abstract class MonthCaldroidListener {
         Calendar cal = Calendar.getInstance();
         for (int month = 0; month < 12; month++) {
             cal.set(_year, month, 1);
-            result.put(month + 1, cal.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+            int style = (android.os.Build.VERSION.SDK_INT >= 26) ? Calendar.LONG_STANDALONE : Calendar.LONG;
+            result.put(month + 1, cal.getDisplayName(Calendar.MONTH, style, Locale.getDefault()));
         }
 
         return result;
