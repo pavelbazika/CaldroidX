@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.caldroid.R;
 import com.caldroid.databinding.MonthCalendarViewBinding;
@@ -40,7 +39,7 @@ public class MonthCaldroidFragment extends DialogFragment {
      * Caldroid view components
      */
     MonthCalendarViewBinding binding;
-    private TextView titleTextView;
+    private Button titleButton;
     private MonthPageChangeListener pageChangeListener;
 
     private int themeResource = R.style.CaldroidDefault;
@@ -188,12 +187,12 @@ public class MonthCaldroidFragment extends DialogFragment {
     /*
      * To let client customize month title textview
      */
-    public TextView getTitleTextView() {
-        return titleTextView;
+    public Button getTitleButton() {
+        return titleButton;
     }
 
-    public void setTitleTextView(TextView titleTextView) {
-        this.titleTextView = titleTextView;
+    public void setTitleButton(Button titleButton) {
+        this.titleButton = titleButton;
     }
 
     /*
@@ -876,7 +875,7 @@ public class MonthCaldroidFragment extends DialogFragment {
      * Refresh month title text view when user swipe
      */
     protected void refreshTitleTextView() {
-        titleTextView.setText(String.valueOf(year));
+        titleButton.setText(String.valueOf(year));
     }
 
     /*
@@ -1064,7 +1063,7 @@ public class MonthCaldroidFragment extends DialogFragment {
         binding = MonthCalendarViewBinding.inflate(localInflater, container, false);
 
         // For the monthTitleTextView
-        titleTextView = binding.calendarYearTextview;
+        titleButton = binding.calendarMonthtitleButton;
 
         // Navigate to previous month when user click
         binding.calendarLeftArrow.setOnClickListener(v -> prevMonth());
@@ -1073,7 +1072,7 @@ public class MonthCaldroidFragment extends DialogFragment {
         binding.calendarRightArrow.setOnClickListener(v -> nextMonth());
 
         if (clickableTitle) {
-            binding.calendarYearTextview.setOnClickListener(v -> {
+            binding.calendarMonthtitleButton.setOnClickListener(v -> {
                 if (monthCaldroidListener != null) {
                     monthCaldroidListener.onTitleClicked(year);
                 }

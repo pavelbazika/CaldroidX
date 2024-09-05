@@ -75,6 +75,8 @@ import hirondelle.date4j.DateTime;
  * @author thomasdao
  */
 
+vyber dne musi odrolovat backstack a prepnout den v main view
+
 @SuppressLint("DefaultLocale")
 public class DateCaldroidFragment extends DialogFragment {
     /*
@@ -1232,7 +1234,7 @@ public class DateCaldroidFragment extends DialogFragment {
         binding = DateCalendarViewBinding.inflate(localInflater, container, false);
 
         // For the monthTitleTextView
-        titleTextView = binding.calendarMonthYearTextview;
+        titleTextView = binding.calendarDaytitleButton;
 
         // Navigate to previous month when user click
         binding.calendarLeftArrow.setOnClickListener(v -> prevMonth());
@@ -1241,7 +1243,7 @@ public class DateCaldroidFragment extends DialogFragment {
         binding.calendarRightArrow.setOnClickListener(v -> nextMonth());
 
         if (clickableTitle) {
-            binding.calendarMonthYearTextview.setOnClickListener(v -> {
+            binding.calendarDaytitleButton.setOnClickListener(v -> {
                 if (dateCaldroidListener != null) {
                     dateCaldroidListener.onTitleClicked(month, year);
                 }

@@ -7,13 +7,6 @@ import androidx.lifecycle.Lifecycle;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import hirondelle.date4j.DateTime;
 
-/**
- * MonthPagerAdapter holds 4 fragments, which provides fragment for current
- * month, previous month and next month. The extra fragment helps for recycle
- * fragments.
- *
- * @author thomasdao
- */
 public class MonthPagerAdapter extends FragmentStateAdapter {
     public MonthPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle, @NonNull DateCaldroidFragment _parent) {
         super(fragmentManager, lifecycle);
