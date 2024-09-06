@@ -75,8 +75,6 @@ import hirondelle.date4j.DateTime;
  * @author thomasdao
  */
 
-vyber dne musi odrolovat backstack a prepnout den v main view
-
 @SuppressLint("DefaultLocale")
 public class DateCaldroidFragment extends DialogFragment {
     /*
@@ -155,6 +153,8 @@ public class DateCaldroidFragment extends DialogFragment {
             MAX_DATE_TIME = "maxDateTime",
             BACKGROUND_FOR_DATETIME_MAP = "backgroundForDateTimeMap",
             TEXT_COLOR_FOR_DATETIME_MAP = "textColorForDateTimeMap";
+
+    private static final String STATE_BUNDLE_KEY = "CALDROID_DATE_SAVED_STATE";
 
     /*
      * Initial data
@@ -1269,12 +1269,22 @@ public class DateCaldroidFragment extends DialogFragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null) {
+            restoreStatesFromKey(savedInstanceState, STATE_BUNDLE_KEY);
+        }
+
 		// Inform client that all views are created and not null
 		// Client should perform customization for buttons and textviews here
 		if (dateCaldroidListener != null) {
 			dateCaldroidListener.onCaldroidViewCreated();
 		}
 	}
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveStatesToKey(outState, STATE_BUNDLE_KEY);
+    }
 
     public void resizeViewPager(@NonNull View _childView, ArrayList<DateTime> _datesInMonth) {
         viewPagerHelper.resizeCalendarViewPager(binding.infinitePager, _childView, _datesInMonth);
