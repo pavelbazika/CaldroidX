@@ -13,14 +13,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import hirondelle.date4j.DateTime;
 
-public abstract class MonthCaldroidListener {
+public class MonthCaldroidListener {
     /*
      * Inform client user has clicked on a date
      *
      * @param date
      * @param view
      */
-    public abstract void onSelectDate(Date date, View view);
+    public void onSelectDate(Date date, View view) {
+        // can work over model
+    }
 
 
     /*

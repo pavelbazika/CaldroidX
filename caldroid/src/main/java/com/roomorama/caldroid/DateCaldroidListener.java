@@ -18,15 +18,16 @@ import hirondelle.date4j.DateTime;
  *
  * @author thomasdao
  */
-public abstract class DateCaldroidListener {
+public class DateCaldroidListener {
     /*
      * Inform client user has clicked on a date
      *
      * @param date
      * @param view
      */
-    public abstract void onSelectDate(Date date, View view);
-
+    public void onSelectDate(Date date, View view) {
+        // can work over model - do nothing
+    }
 
     /*
      * Inform client user has long clicked on a date

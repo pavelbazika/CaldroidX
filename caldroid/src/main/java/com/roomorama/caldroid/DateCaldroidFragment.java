@@ -40,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 import hirondelle.date4j.DateTime;
 
@@ -222,6 +223,8 @@ public class DateCaldroidFragment extends DialogFragment {
      * Caldroid
      */
     private DateCaldroidListener dateCaldroidListener;
+
+    private CaldroidViewModel caldroidViewModel;
 
     /*
      * Retrieve current month
@@ -947,26 +950,26 @@ public class DateCaldroidFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if (dateCaldroidListener != null) {
-                        DateGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
-                        if (pageAdapter != null) {
-                            DateTime dateTime = pageAdapter.getDatetimeList().get(position);
+                    DateGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
+                    if (pageAdapter != null) {
+                        DateTime dateTime = pageAdapter.getDatetimeList().get(position);
 
-                            if (!enableClickOnDisabledDates) {
-                                if (minDateTime != null && dateTime
-                                        .lt(minDateTime) || maxDateTime != null && dateTime
-                                        .gt(maxDateTime) || disableDates.contains(dateTime)) {
-                                    return;
-                                }
+                        if (!enableClickOnDisabledDates) {
+                            if (minDateTime != null && dateTime
+                                    .lt(minDateTime) || maxDateTime != null && dateTime
+                                    .gt(maxDateTime) || disableDates.contains(dateTime)) {
+                                return;
                             }
+                        }
 
-                            Date date = CalendarHelper
-                                    .convertDateTimeToDate(dateTime);
+                        Date date = CalendarHelper.convertDateTimeToDate(dateTime);
+                        caldroidViewModel.selectDate(date);
+                        if (dateCaldroidListener != null) {
                             dateCaldroidListener.onSelectDate(date, view);
                         }
-                        else {
-                            throw new InternalError("Current page adapter not found");
-                        }
+                    }
+                    else {
+                        throw new InternalError("Current page adapter not found");
                     }
                 }
             };
@@ -1244,6 +1247,11 @@ public class DateCaldroidFragment extends DialogFragment {
 
         if (clickableTitle) {
             binding.calendarDaytitleButton.setOnClickListener(v -> {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.YEAR, year);
+                caldroidViewModel.dateTitleClicked(cal.getTime());
+
                 if (dateCaldroidListener != null) {
                     dateCaldroidListener.onTitleClicked(month, year);
                 }
@@ -1272,6 +1280,8 @@ public class DateCaldroidFragment extends DialogFragment {
         if (savedInstanceState != null) {
             restoreStatesFromKey(savedInstanceState, STATE_BUNDLE_KEY);
         }
+
+        caldroidViewModel = new ViewModelProvider(requireActivity()).get(CaldroidViewModel.class);
 
 		// Inform client that all views are created and not null
 		// Client should perform customization for buttons and textviews here

@@ -18,6 +18,7 @@ import com.caldroid.databinding.MonthCalendarViewBinding;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -29,11 +30,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 import hirondelle.date4j.DateTime;
 
 public class MonthCaldroidFragment extends DialogFragment {
     private final YearViewPagerHelper viewPagerHelper = new YearViewPagerHelper();
+
+    private static final String STATE_BUNDLE_KEY = "CALDROID_MONTH_SAVED_STATE";
 
     /*
      * Caldroid view components
@@ -126,6 +130,8 @@ public class MonthCaldroidFragment extends DialogFragment {
      * Caldroid
      */
     private MonthCaldroidListener monthCaldroidListener;
+
+    private CaldroidViewModel caldroidViewModel;
 
     /*
      * Retrieve current year
@@ -806,26 +812,27 @@ public class MonthCaldroidFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if (monthCaldroidListener != null) {
-                        MonthGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
-                        if (pageAdapter != null) {
-                            DateTime dateTime = pageAdapter.getCellDateTime(position);
+                    MonthGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
+                    if (pageAdapter != null) {
+                        DateTime dateTime = pageAdapter.getCellDateTime(position);
 
-                            if (!enableClickOnDisabledDates) {
-                                if (minDateTime != null && dateTime
-                                        .lt(minDateTime) || maxDateTime != null && dateTime
-                                        .gt(maxDateTime) || disableDates.contains(dateTime)) {
-                                    return;
-                                }
+                        if (!enableClickOnDisabledDates) {
+                            if (minDateTime != null && dateTime
+                                    .lt(minDateTime) || maxDateTime != null && dateTime
+                                    .gt(maxDateTime) || disableDates.contains(dateTime)) {
+                                return;
                             }
+                        }
 
-                            Date date = CalendarHelper
-                                    .convertDateTimeToDate(dateTime);
+                        Date date = CalendarHelper.convertDateTimeToDate(dateTime);
+                        caldroidViewModel.selectMonth(date);
+
+                        if (monthCaldroidListener != null) {
                             monthCaldroidListener.onSelectDate(date, view);
                         }
-                        else {
-                            throw new InternalError("Current page adapter not found");
-                        }
+                    }
+                    else {
+                        throw new InternalError("Current page adapter not found");
                     }
                 }
             };
@@ -1073,6 +1080,13 @@ public class MonthCaldroidFragment extends DialogFragment {
 
         if (clickableTitle) {
             binding.calendarMonthtitleButton.setOnClickListener(v -> {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.YEAR, year);
+                cal.set(Calendar.MONTH, 0);
+                cal.set(Calendar.DAY_OF_MONTH, 1);
+
+                caldroidViewModel.monthTitleClicked(cal.getTime());
+
                 if (monthCaldroidListener != null) {
                     monthCaldroidListener.onTitleClicked(year);
                 }
@@ -1095,12 +1109,25 @@ public class MonthCaldroidFragment extends DialogFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null) {
+            restoreStatesFromKey(savedInstanceState, STATE_BUNDLE_KEY);
+        }
+
+        caldroidViewModel = new ViewModelProvider(requireActivity()).get(CaldroidViewModel.class);
+
         // Inform client that all views are created and not null
         // Client should perform customization for buttons and textviews here
         if (monthCaldroidListener != null) {
             monthCaldroidListener.onCaldroidViewCreated();
         }
     }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveStatesToKey(outState, STATE_BUNDLE_KEY);
+    }
+
 
     public void resizeViewPager(@NonNull View _childView) {
         viewPagerHelper.resizeCalendarViewPager(binding.infinitePager, _childView);

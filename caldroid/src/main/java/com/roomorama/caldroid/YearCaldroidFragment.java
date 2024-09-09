@@ -28,6 +28,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import hirondelle.date4j.DateTime;
 
 public class YearCaldroidFragment extends DialogFragment {
@@ -122,6 +123,8 @@ public class YearCaldroidFragment extends DialogFragment {
      * Caldroid
      */
     private YearCaldroidListener yearCaldroidListener;
+
+    private CaldroidViewModel caldroidViewModel;
 
     public YearCaldroidListener getYearCaldroidListener() {
         return yearCaldroidListener;
@@ -624,19 +627,20 @@ public class YearCaldroidFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if (yearCaldroidListener != null) {
-                        DateTime dateTime = yearGridAdapter.getCellDateTime(position);
+                    DateTime dateTime = yearGridAdapter.getCellDateTime(position);
 
-                        if (!enableClickOnDisabledDates) {
-                            if (minDateTime != null && dateTime
-                                    .lt(minDateTime) || maxDateTime != null && dateTime
-                                    .gt(maxDateTime) || disableDates.contains(dateTime)) {
-                                return;
-                            }
+                    if (!enableClickOnDisabledDates) {
+                        if (minDateTime != null && dateTime
+                                .lt(minDateTime) || maxDateTime != null && dateTime
+                                .gt(maxDateTime) || disableDates.contains(dateTime)) {
+                            return;
                         }
+                    }
 
-                        Date date = CalendarHelper
-                                .convertDateTimeToDate(dateTime);
+                    Date date = CalendarHelper.convertDateTimeToDate(dateTime);
+                    caldroidViewModel.selectYear(date);
+
+                    if (yearCaldroidListener != null) {
                         yearCaldroidListener.onSelectDate(date, view);
                     }
                 }
@@ -868,6 +872,8 @@ public class YearCaldroidFragment extends DialogFragment {
                 viewPagerHelper.resizeCalendarViewPager(binding.calendarYearGridContainer, binding.calendarYearGridview, ((yearCount - 1) / 4) + 1));
 
         super.onViewCreated(view, savedInstanceState);
+
+        caldroidViewModel = new ViewModelProvider(requireActivity()).get(CaldroidViewModel.class);
 
         // Inform client that all views are created and not null
         // Client should perform customization for buttons and textviews here
