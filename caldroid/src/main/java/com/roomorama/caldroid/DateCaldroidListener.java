@@ -25,7 +25,7 @@ public class DateCaldroidListener {
      * @param date
      * @param view
      */
-    public void onSelectDate(Date date, View view) {
+    public void onSelectDate(Date ignoredDate, View ignoredView) {
         // can work over model - do nothing
     }
 
@@ -65,7 +65,7 @@ public class DateCaldroidListener {
     }
 
     // Called when title was clicked
-    public void onTitleClicked(int _month, int _year) {
+    public void onTitleClicked(int ignoredMonth, int ignoredYear) {
 
     }
 }
