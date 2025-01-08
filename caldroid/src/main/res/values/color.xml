@@ -31,7 +31,6 @@
 
     <color name="juicy_btn_orange_background">@color/juicy_orange</color>
     <color name="juicy_btn_white_background">@color/juicy_white</color>
+    <color name="juicy_btn_white_touchresponse">@color/juicy_dark_grey</color>
     <color name="juicy_btn_disabled_background">@color/juicy_disabled_background</color>
-    <color name="btn_juicy_menu_background">#000000</color>
-    <color name="btn_juicy_menu_text">#FFFFFF</color>
 </resources>
