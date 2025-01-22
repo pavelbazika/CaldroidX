@@ -106,4 +106,28 @@
 
     <style name="CaldroidDefaultDarkSquareCell" parent="CaldroidDefaultDarkCell" />
 
+    <!-- juicy buttons synced with omninotes and caldroidx -->
+    <style name="BtnJuicyBase" parent="Widget.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:paddingTop">4dp</item>
+        <item name="android:paddingBottom">4dp</item>
+        <item name="android:paddingLeft">16sp</item>
+        <item name="android:paddingRight">16sp</item>
+        <item name="android:singleLine">false</item>
+        <item name="android:ellipsize">none</item>
+    </style>
+
+    <style name="BtnJuicyOrange" parent="BtnJuicyBase">
+        <item name="android:background">@drawable/juicy_btn_orange</item>
+        <item name="android:textColor">@color/juicy_btn_orange_text</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="BtnJuicyWhite" parent="BtnJuicyBase">
+        <item name="android:background">@drawable/juicy_btn_white</item>
+        <item name="android:textColor">@color/juicy_btn_white_text</item>
+    </style>
+
+    <!--    end of sync-->
+
 </resources>

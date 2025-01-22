@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Enabled state -->
+    <item android:state_enabled="true">
+        <ripple android:color="?attr/colorControlHighlight">
+            <item>
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/juicy_btn_radius"/>
+                    <solid android:color="@color/juicy_btn_orange_background" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+    <item android:state_enabled="false">
+        <ripple android:color="?attr/colorControlHighlight">
+            <item>
+                <shape android:shape="rectangle">
+                    <corners android:radius="@dimen/juicy_btn_radius"/>
+                    <solid android:color="@color/juicy_btn_disabled_background" />
+                </shape>
+            </item>
+        </ripple>
+    </item>
+</selector>

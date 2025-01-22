@@ -22,15 +22,16 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/calendar_year_textview"
-            style="?styleCaldroidMonthName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            android:id="@+id/calendar_monthtitle_button"
+            style="@style/BtnJuicyWhite"
+            android:layout_width="0dp"
+            android:layout_height="32dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/calendar_right_arrow"
             app:layout_constraintStart_toEndOf="@+id/calendar_left_arrow"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Prosinec"/>
 
         <Button
             android:id="@+id/calendar_right_arrow"

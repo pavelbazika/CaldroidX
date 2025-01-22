@@ -20,4 +20,17 @@
     <color name="caldroid_555">#555</color>
     <color name="caldroid_light_red">#ff7f7f</color>
 
+    <!--    Beware that juicy colors are also defined in omninoteslib and caldroidx -->
+    <color name="juicy_orange">#FFA500</color>
+    <color name="juicy_white">#FFFFFF</color>
+    <color name="juicy_black">#000000</color>
+    <color name="juicy_blue">#0099cc</color>
+    <color name="juicy_dark_grey">#555555</color>
+    <color name="juicy_disabled_background">#808080</color>
+    <color name="juicy_disabled_text">#A9A9A9</color>
+
+    <color name="juicy_btn_orange_background">@color/juicy_orange</color>
+    <color name="juicy_btn_white_background">@color/juicy_white</color>
+    <color name="juicy_btn_white_touchresponse">@color/juicy_dark_grey</color>
+    <color name="juicy_btn_disabled_background">@color/juicy_disabled_background</color>
 </resources>

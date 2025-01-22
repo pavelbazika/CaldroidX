@@ -40,6 +40,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.viewpager2.widget.ViewPager2;
 import hirondelle.date4j.DateTime;
 
@@ -154,6 +155,8 @@ public class DateCaldroidFragment extends DialogFragment {
             BACKGROUND_FOR_DATETIME_MAP = "backgroundForDateTimeMap",
             TEXT_COLOR_FOR_DATETIME_MAP = "textColorForDateTimeMap";
 
+    private static final String STATE_BUNDLE_KEY = "CALDROID_DATE_SAVED_STATE";
+
     /*
      * Initial data
      */
@@ -220,6 +223,8 @@ public class DateCaldroidFragment extends DialogFragment {
      * Caldroid
      */
     private DateCaldroidListener dateCaldroidListener;
+
+    private CaldroidViewModel caldroidViewModel;
 
     /*
      * Retrieve current month
@@ -368,7 +373,7 @@ public class DateCaldroidFragment extends DialogFragment {
      */
     public void setBackgroundDrawableForDates(
             Map<Date, Drawable> backgroundForDateMap) {
-        if (backgroundForDateMap == null || backgroundForDateMap.size() == 0) {
+        if (backgroundForDateMap == null || backgroundForDateMap.isEmpty()) {
             return;
         }
 
@@ -382,7 +387,7 @@ public class DateCaldroidFragment extends DialogFragment {
     }
 
     public void clearBackgroundDrawableForDates(List<Date> dates) {
-        if (dates == null || dates.size() == 0) {
+        if (dates == null || dates.isEmpty()) {
             return;
         }
 
@@ -397,7 +402,7 @@ public class DateCaldroidFragment extends DialogFragment {
     }
 
     public void clearBackgroundDrawableForDateTimes(List<DateTime> dateTimes) {
-        if (dateTimes == null || dateTimes.size() == 0) return;
+        if (dateTimes == null || dateTimes.isEmpty()) return;
 
         for (DateTime dateTime : dateTimes) {
             backgroundForDateTimeMap.remove(dateTime);
@@ -429,7 +434,7 @@ public class DateCaldroidFragment extends DialogFragment {
      * @return
      */
     public void setTextColorForDates(Map<Date, Integer> textColorForDateMap) {
-        if (textColorForDateMap == null || textColorForDateMap.size() == 0) {
+        if (textColorForDateMap == null || textColorForDateMap.isEmpty()) {
             return;
         }
 
@@ -443,7 +448,7 @@ public class DateCaldroidFragment extends DialogFragment {
     }
 
     public void clearTextColorForDates(List<Date> dates) {
-        if (dates == null || dates.size() == 0) return;
+        if (dates == null || dates.isEmpty()) return;
 
         for (Date date : dates) {
             clearTextColorForDate(date);
@@ -483,12 +488,12 @@ public class DateCaldroidFragment extends DialogFragment {
             bundle.putString(DIALOG_TITLE, dialogTitle);
         }
 
-        if (selectedDates.size() > 0) {
+        if (!selectedDates.isEmpty()) {
             bundle.putStringArrayList(SELECTED_DATES,
                     CalendarHelper.convertToStringList(selectedDates));
         }
 
-        if (disableDates.size() > 0) {
+        if (!disableDates.isEmpty()) {
             bundle.putStringArrayList(DISABLE_DATES,
                     CalendarHelper.convertToStringList(disableDates));
         }
@@ -669,7 +674,7 @@ public class DateCaldroidFragment extends DialogFragment {
      * @param disableDateList
      */
     public void setDisableDates(ArrayList<Date> disableDateList) {
-        if (disableDateList == null || disableDateList.size() == 0) {
+        if (disableDateList == null || disableDateList.isEmpty()) {
             return;
         }
 
@@ -945,26 +950,26 @@ public class DateCaldroidFragment extends DialogFragment {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view,
                                         int position, long id) {
-                    if (dateCaldroidListener != null) {
-                        DateGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
-                        if (pageAdapter != null) {
-                            DateTime dateTime = pageAdapter.getDatetimeList().get(position);
+                    DateGridAdapter pageAdapter = getPageAdapter(getCurrentPagerPoistion());
+                    if (pageAdapter != null) {
+                        DateTime dateTime = pageAdapter.getDatetimeList().get(position);
 
-                            if (!enableClickOnDisabledDates) {
-                                if (minDateTime != null && dateTime
-                                        .lt(minDateTime) || maxDateTime != null && dateTime
-                                        .gt(maxDateTime) || disableDates.contains(dateTime)) {
-                                    return;
-                                }
+                        if (!enableClickOnDisabledDates) {
+                            if (minDateTime != null && dateTime
+                                    .lt(minDateTime) || maxDateTime != null && dateTime
+                                    .gt(maxDateTime) || disableDates.contains(dateTime)) {
+                                return;
                             }
+                        }
 
-                            Date date = CalendarHelper
-                                    .convertDateTimeToDate(dateTime);
+                        Date date = CalendarHelper.convertDateTimeToDate(dateTime);
+                        caldroidViewModel.selectDate(date);
+                        if (dateCaldroidListener != null) {
                             dateCaldroidListener.onSelectDate(date, view);
                         }
-                        else {
-                            throw new InternalError("Current page adapter not found");
-                        }
+                    }
+                    else {
+                        throw new InternalError("Current page adapter not found");
                     }
                 }
             };
@@ -1108,7 +1113,7 @@ public class DateCaldroidFragment extends DialogFragment {
             // Get disable dates
             ArrayList<String> disableDateStrings = args
                     .getStringArrayList(DISABLE_DATES);
-            if (disableDateStrings != null && disableDateStrings.size() > 0) {
+            if (disableDateStrings != null && !disableDateStrings.isEmpty()) {
                 disableDates.clear();
                 for (String dateString : disableDateStrings) {
                     DateTime dt = CalendarHelper.getDateTimeFromString(
@@ -1120,7 +1125,7 @@ public class DateCaldroidFragment extends DialogFragment {
             // Get selected dates
             ArrayList<String> selectedDateStrings = args
                     .getStringArrayList(SELECTED_DATES);
-            if (selectedDateStrings != null && selectedDateStrings.size() > 0) {
+            if (selectedDateStrings != null && !selectedDateStrings.isEmpty()) {
                 selectedDates.clear();
                 for (String dateString : selectedDateStrings) {
                     DateTime dt = CalendarHelper.getDateTimeFromString(
@@ -1232,7 +1237,7 @@ public class DateCaldroidFragment extends DialogFragment {
         binding = DateCalendarViewBinding.inflate(localInflater, container, false);
 
         // For the monthTitleTextView
-        titleTextView = binding.calendarMonthYearTextview;
+        titleTextView = binding.calendarDaytitleButton;
 
         // Navigate to previous month when user click
         binding.calendarLeftArrow.setOnClickListener(v -> prevMonth());
@@ -1241,7 +1246,12 @@ public class DateCaldroidFragment extends DialogFragment {
         binding.calendarRightArrow.setOnClickListener(v -> nextMonth());
 
         if (clickableTitle) {
-            binding.calendarMonthYearTextview.setOnClickListener(v -> {
+            binding.calendarDaytitleButton.setOnClickListener(v -> {
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.YEAR, year);
+                caldroidViewModel.dateTitleClicked(cal.getTime());
+
                 if (dateCaldroidListener != null) {
                     dateCaldroidListener.onTitleClicked(month, year);
                 }
@@ -1267,12 +1277,24 @@ public class DateCaldroidFragment extends DialogFragment {
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
+        if (savedInstanceState != null) {
+            restoreStatesFromKey(savedInstanceState, STATE_BUNDLE_KEY);
+        }
+
+        caldroidViewModel = new ViewModelProvider(requireActivity()).get(CaldroidViewModel.class);
+
 		// Inform client that all views are created and not null
 		// Client should perform customization for buttons and textviews here
 		if (dateCaldroidListener != null) {
 			dateCaldroidListener.onCaldroidViewCreated();
 		}
 	}
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveStatesToKey(outState, STATE_BUNDLE_KEY);
+    }
 
     public void resizeViewPager(@NonNull View _childView, ArrayList<DateTime> _datesInMonth) {
         viewPagerHelper.resizeCalendarViewPager(binding.infinitePager, _childView, _datesInMonth);
