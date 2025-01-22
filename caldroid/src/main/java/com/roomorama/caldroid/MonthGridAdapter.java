@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.caldroid.R;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,6 +36,9 @@ public class MonthGridAdapter extends BaseAdapter {
     protected boolean squareTextViewCell;
     protected int themeResource;
     protected final Resources resources;
+    protected ArrayList<DateTime> selectedDates;
+
+    protected final Map<DateTime, Integer> selectedDatesMap = new HashMap<>();
 
     protected int defaultCellBackgroundRes = -1;
     protected ColorStateList defaultTextColorRes;
@@ -124,6 +129,15 @@ public class MonthGridAdapter extends BaseAdapter {
      * Retrieve internal parameters from caldroid data
      */
     private void populateFromCaldroidData() {
+        selectedDates = (ArrayList<DateTime>) caldroidData
+                .get(DateCaldroidFragment.SELECTED_DATES);
+        if (selectedDates != null) {
+            selectedDatesMap.clear();
+            for (DateTime dateTime : selectedDates) {
+                selectedDatesMap.put(dateTime, 1);
+            }
+        }
+
         minDateTime = (DateTime) caldroidData
                 .get(MonthCaldroidFragment.MIN_DATE_TIME);
         maxDateTime = (DateTime) caldroidData
@@ -243,6 +257,11 @@ public class MonthGridAdapter extends BaseAdapter {
                     || ((dateTime.getYear().equals(maxDateTime.getYear())) && (dateTime.getMonth() > maxDateTime.getMonth()))))) {
 
             cellView.addCustomState(CellView.STATE_DISABLED);
+        }
+
+        // Customize for selected dates
+        if (selectedDates != null && selectedDatesMap.containsKey(dateTime)) {
+            cellView.addCustomState(CellView.STATE_SELECTED);
         }
 
         cellView.refreshDrawableState();
