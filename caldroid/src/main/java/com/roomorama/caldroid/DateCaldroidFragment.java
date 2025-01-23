@@ -1248,7 +1248,7 @@ public class DateCaldroidFragment extends DialogFragment {
         if (clickableTitle) {
             binding.calendarDaytitleButton.setOnClickListener(v -> {
                 Calendar cal = Calendar.getInstance();
-                cal.set(Calendar.MONTH, month);
+                cal.set(Calendar.MONTH, month - 1);
                 cal.set(Calendar.YEAR, year);
                 caldroidViewModel.dateTitleClicked(cal.getTime());
 

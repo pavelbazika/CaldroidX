@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import com.caldroid.R;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
@@ -33,6 +35,9 @@ public class YearGridAdapter extends BaseAdapter {
     protected boolean squareTextViewCell;
     protected int themeResource;
     protected final Resources resources;
+    protected ArrayList<DateTime> selectedDates;
+
+    protected final Map<DateTime, Integer> selectedDatesMap = new HashMap<>();
 
     protected int defaultCellBackgroundRes = -1;
     protected ColorStateList defaultTextColorRes;
@@ -118,6 +123,15 @@ public class YearGridAdapter extends BaseAdapter {
      * Retrieve internal parameters from caldroid data
      */
     private void populateFromCaldroidData() {
+        selectedDates = (ArrayList<DateTime>) caldroidData
+                .get(DateCaldroidFragment.SELECTED_DATES);
+        if (selectedDates != null) {
+            selectedDatesMap.clear();
+            for (DateTime dateTime : selectedDates) {
+                selectedDatesMap.put(new DateTime(dateTime.getYear(), 1, 1, 0, 0, 0, 0), 1);
+            }
+        }
+
         minDateTime = (DateTime) caldroidData
                 .get(YearCaldroidFragment.MIN_DATE_TIME);
         maxDateTime = (DateTime) caldroidData
@@ -235,6 +249,11 @@ public class YearGridAdapter extends BaseAdapter {
         if ((minDateTime != null && (dateTime.getYear() < minDateTime.getYear()))
                 || (maxDateTime != null && (dateTime.getYear() > maxDateTime.getYear()))) {
             cellView.addCustomState(CellView.STATE_DISABLED);
+        }
+
+        // Customize for selected dates
+        if (selectedDates != null && selectedDatesMap.containsKey(dateTime)) {
+            cellView.addCustomState(CellView.STATE_SELECTED);
         }
 
         cellView.refreshDrawableState();
