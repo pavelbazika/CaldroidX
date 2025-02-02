@@ -47,12 +47,12 @@ public abstract class YearCaldroidListener {
     }
 
     @Nullable
-    public Map<DateTime, Drawable> getBackgroundYearMap() {
+    public Map<DateTime, Drawable> getBackgroundYearMap(int _maxYear) {
         return null;
     }
 
     @Nullable
-    public Map<Integer, String> getCellTexts() {
+    public Map<Integer, String> getCellTexts(int _maxYear) {
         return null;
     }
 }

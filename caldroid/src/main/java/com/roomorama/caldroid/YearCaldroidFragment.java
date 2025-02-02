@@ -843,13 +843,13 @@ public class YearCaldroidFragment extends DialogFragment {
         titleTextView.setText(titleString);
 
         if (yearCaldroidListener != null) {
-            Map<DateTime, Drawable> bckMap = yearCaldroidListener.getBackgroundYearMap();
+            Map<DateTime, Drawable> bckMap = yearCaldroidListener.getBackgroundYearMap(maxDateTime.getYear());
             if (bckMap != null) {
                 yearCount = bckMap.size();
                 if (yearCaldroidListener != null) {
                     backgroundForDateTimeMap = bckMap;
 
-                    Map<Integer, String> ct = yearCaldroidListener.getCellTexts();
+                    Map<Integer, String> ct = yearCaldroidListener.getCellTexts(maxDateTime.getYear());
                     if (ct != null) {
                         cellTexts = ct;
                     }
