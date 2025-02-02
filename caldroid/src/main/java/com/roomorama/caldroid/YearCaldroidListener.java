@@ -16,7 +16,7 @@ public abstract class YearCaldroidListener {
      * @param date
      * @param view
      */
-    public void onSelectDate(Date date, View view) {
+    public void onSelectDate(Date ignoredDate, View ignoredView) {
 
     }
 
